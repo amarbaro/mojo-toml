@@ -1,5 +1,7 @@
 # mojo-toml
 
+[![CI](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml/badge.svg)](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml)
+
 A TOML 1.1 parser written in pure Mojo. It passes the complete official
 conformance suite, [toml-test](https://github.com/toml-lang/toml-test) v2.2.0:
 **214/214 valid and 467/467 invalid** documents, on Mojo 1.1.0 and on the 1.2 nightly.
@@ -56,15 +58,17 @@ The API is in [docs/api.md](docs/api.md). How it works and what it costs is in
   seconds were left out) and its kind, not a date object.
 - **Integers are `Int64`.** Values outside its range are rejected, as the spec requires.
 - **Whole document in memory.** No streaming parser.
-- TOML 1.0 documents parse the same as before. A strict 1.0 mode does not exist, so the
-  1.1 additions above are always accepted.
+- **No strict TOML 1.0 mode.** 1.0 documents parse, and the 1.1 additions above are
+  always accepted.
 
 ## Conformance check
 
 ```
-uv sync
-TOML_TEST=/path/to/toml-test scripts/conformance.sh
+scripts/ci.sh
 ```
+
+It runs `uv sync`, downloads toml-test v2.2.0, then `scripts/conformance.sh`. CI runs the
+same script on every push.
 
 It builds `tests/decoder.mojo` (TOML on stdin, tagged JSON on stdout), runs the full
 toml-test 1.1 suite, then two checks for tables wide enough to use the key index.
