@@ -17,7 +17,7 @@ def main() raises:
 
 ## Install
 
-Requires Mojo 1.1 (`pip install "mojo>=1.1.0,<1.2"` or `uv sync` in this repo).
+Requires Mojo 1.2 (`pip install "mojo>=1.1.0,<1.2"` or `uv sync` in this repo).
 There is no package registry for Mojo yet, so pick one:
 
 | Way | Command |
