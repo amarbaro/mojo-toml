@@ -1,6 +1,9 @@
 # mojo-toml
 
-[![CI](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml/badge.svg)](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml)
+<!-- badges -->
+[![ci](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml) [![latest release](https://img.shields.io/github/v/release/amarbaro/mojo-toml)](https://github.com/amarbaro/mojo-toml/releases/latest) [![license](https://img.shields.io/github/license/amarbaro/mojo-toml)](https://github.com/amarbaro/mojo-toml/blob/main/LICENSE)
+<!-- /badges -->
+
 
 A TOML 1.1 parser written in pure Mojo. It passes the complete official
 conformance suite, [toml-test](https://github.com/toml-lang/toml-test) v2.2.0:
