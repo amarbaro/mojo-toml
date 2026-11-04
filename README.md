@@ -4,6 +4,43 @@
 [![ci](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/amarbaro/mojo-toml/actions/workflows/ci.yml) [![latest release](https://img.shields.io/github/v/release/amarbaro/mojo-toml)](https://github.com/amarbaro/mojo-toml/releases/latest) [![license](https://img.shields.io/github/license/amarbaro/mojo-toml)](https://github.com/amarbaro/mojo-toml/blob/main/LICENSE)
 <!-- /badges -->
 
+<!-- install -->
+Install: `pixi add mojo-toml` once published. For now: `git clone https://github.com/amarbaro/mojo-toml`, then `mojo run -I mojo-toml/src app.mojo`.
+
+```mojo
+from toml import parse, to_json, KIND_TABLE
+
+
+def main() raises:
+    var doc = parse("""
+title = "demo"
+[server]
+host = "localhost"
+port = 8080
+ratio = 0.75
+debug = true
+started = 1979-05-27T07:32:00Z
+tags = ["a", "b"]
+""")
+    var server = doc["server"]
+    print(server["host"].as_string(), server["port"].as_int())
+    print(server["ratio"].as_float(), server["debug"].as_bool())
+    print(server["started"].as_datetime_text(), server["tags"].len(), server["tags"][1].as_string())
+    print(doc.contains("title"), doc.get("missing").__bool__(), server.kind() == KIND_TABLE)
+    for k in server.keys():
+        print("key", k)
+    print(to_json(doc["title"]))
+    try:
+        _ = parse("a = 1\na = 2")
+    except e:
+        print("error:", e)
+```
+
+| | |
+|---|---|
+| parse | 104 ms |
+<!-- /install -->
+
 
 A TOML 1.1 parser written in pure Mojo. It passes the complete official
 conformance suite, [toml-test](https://github.com/toml-lang/toml-test) v2.2.0:
