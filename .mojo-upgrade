@@ -1,0 +1,2 @@
+# mojo-upgrade check: tests/prop.mojo imports the sibling mojo-proptest checkout (scripts use PROPTEST, default ../mojo-proptest/src)
+include ../mojo-proptest/src
