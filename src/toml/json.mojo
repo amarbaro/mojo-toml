@@ -10,7 +10,6 @@ from toml.value import (
     DATETIME_OFFSET,
     DATETIME_LOCAL,
     DATE_LOCAL,
-    TIME_LOCAL,
 )
 
 
