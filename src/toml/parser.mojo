@@ -912,12 +912,9 @@ struct Parser:
                 consumed += 1
             if consumed != n:
                 self.fail_at(start, "invalid digit for base " + String(radix))
-            var value: Int64 = 0
-            for d in digits:
-                value = value * Int64(radix) + Int64(d)
             var node = TomlNode()
             node.kind = KIND_INTEGER
-            node.i = value
+            node.i = self.to_int(digits, radix, False, start)
             node.s = tok
             return self.doc.push(node^)
 
@@ -958,14 +955,9 @@ struct Parser:
             self.fail_at(start, "malformed number")
 
         if not is_float:
-            var value: Int64 = 0
-            for d in digits1:
-                value = value * 10 + Int64(d)
-            if neg:
-                value = -value
             var node = TomlNode()
             node.kind = KIND_INTEGER
-            node.i = value
+            node.i = self.to_int(digits1, 10, neg, start)
             node.s = tok
             return self.doc.push(node^)
 
@@ -981,6 +973,17 @@ struct Parser:
         node.f = result
         node.s = tok
         return self.doc.push(node^)
+
+    def to_int(self, digits: List[Int], radix: Int, neg: Bool, start: Int) raises -> Int64:
+        """The digits as a signed 64-bit integer; a magnitude past the range is an error, never a wrap."""
+        var m = UInt64(0)
+        for d in digits:
+            if m > (UInt64.MAX - UInt64(d)) // UInt64(radix):
+                self.fail_at(start, "integer out of range")
+            m = m * UInt64(radix) + UInt64(d)
+        if m > (UInt64(1) << 63) - UInt64(0 if neg else 1):
+            self.fail_at(start, "integer out of range")
+        return Int64(0) - Int64(m) if neg else Int64(m)
 
     def match_lit(self, b: List[UInt8], i: Int, n: Int, lit: String) -> Bool:
         var lb = lit.as_bytes()

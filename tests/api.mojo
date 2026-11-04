@@ -58,4 +58,12 @@ name = "second"
         _ = doc["i"].as_string()
     with assert_raises(contains="duplicate key 'a' at line 2:6"):
         _ = parse("a = 1\na = 2")
+    # integers are 64-bit signed: the edges parse, one past them is rejected (never wraps)
+    assert_equal(parse("a = 9223372036854775807")["a"].as_int(), 9223372036854775807)
+    assert_equal(parse("a = -9223372036854775808")["a"].as_int(), -9223372036854775807 - 1)
+    assert_equal(parse("a = 0x7FFFFFFFFFFFFFFF")["a"].as_int(), 9223372036854775807)
+    for bad in ["9223372036854775808", "-9223372036854775809", "18446744073709551616", "0xFFFFFFFFFFFFFFFF",
+                "0o1777777777777777777777", "0b1" + "0" * 63, "99999999999999999999999999"]:
+        with assert_raises(contains="out of range"):
+            _ = parse("a = " + bad)
     print("api: ok")
