@@ -5,7 +5,7 @@ description: "Read TOML config files from Mojo with the mojo-toml library: insta
 
 # mojo-toml
 
-A TOML 1.1 parser in pure Mojo (1.1.0 stable and 1.2 nightly). It passes the full
+A TOML 1.1 parser in pure Mojo (Mojo 1.2.0). It passes the full
 toml-test suite, so treat a parse error as a bug in the input, not in the parser.
 
 ## Install

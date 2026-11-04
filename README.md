@@ -7,7 +7,7 @@
 
 A TOML 1.1 parser written in pure Mojo. It passes the complete official
 conformance suite, [toml-test](https://github.com/toml-lang/toml-test) v2.2.0:
-**214/214 valid and 467/467 invalid** documents, on Mojo 1.1.0 and on the 1.2 nightly.
+**214/214 valid and 467/467 invalid** documents, on Mojo 1.2.0.
 
 ```mojo
 from toml import parse
@@ -20,7 +20,7 @@ def main() raises:
 
 ## Install
 
-Requires Mojo 1.2 (`pip install "mojo>=1.1.0,<1.2"` or `uv sync` in this repo).
+Requires Mojo 1.2 (`pip install "mojo==1.2.0"` or `uv sync` in this repo).
 There is no package registry for Mojo yet, so pick one:
 
 | Way | Command |
