@@ -66,4 +66,10 @@ name = "second"
                 "0o1777777777777777777777", "0b1" + "0" * 63, "99999999999999999999999999"]:
         with assert_raises(contains="out of range"):
             _ = parse("a = " + bad)
+    # nesting is bounded: a deep array or inline table is an error, not a stack overflow
+    with assert_raises(contains="too deeply nested"):
+        _ = parse("a = " + "[" * 100000 + "]" * 100000)
+    with assert_raises(contains="too deeply nested"):
+        _ = parse("a = " + "{b=" * 100000 + "1" + "}" * 100000)
+    assert_equal(parse("a = " + "[" * 100 + "]" * 100).len(), 1)
     print("api: ok")

@@ -24,6 +24,7 @@ comptime LBRACE: UInt8 = 123
 comptime RBRACE: UInt8 = 125
 comptime COMMA: UInt8 = 44
 comptime DOT: UInt8 = 46
+comptime MAX_DEPTH = 128  # arrays and inline tables nest at most this deep
 comptime EQUALS: UInt8 = 61
 comptime HASH: UInt8 = 35
 comptime BACKSLASH: UInt8 = 92
@@ -172,6 +173,7 @@ struct Parser:
     var doc: TomlDoc
     var root: Int
     var current_table: Int
+    var depth: Int
 
     def __init__(out self, var data: List[UInt8]) raises:
         validate_utf8(data)
@@ -182,6 +184,7 @@ struct Parser:
         rn.kind = KIND_TABLE
         self.root = self.doc.push(rn^)
         self.current_table = self.root
+        self.depth = 0
 
     # ---- low level helpers ----
 
@@ -431,10 +434,13 @@ struct Parser:
             n.kind = KIND_STRING
             n.s = s
             return self.doc.push(n^)
-        if c == LBRACKET:
-            return self.parse_array()
-        if c == LBRACE:
-            return self.parse_inline_table()
+        if c == LBRACKET or c == LBRACE:
+            if self.depth >= MAX_DEPTH:
+                self.fail("too deeply nested")
+            self.depth += 1
+            var idx = self.parse_array() if c == LBRACKET else self.parse_inline_table()
+            self.depth -= 1
+            return idx
         if c == UInt8(116):  # t
             self.expect_literal("true")
             var n = TomlNode()
