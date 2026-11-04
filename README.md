@@ -8,63 +8,25 @@
 Install: `pixi add mojo-toml` once published. For now: `git clone https://github.com/amarbaro/mojo-toml`, then `mojo run -I mojo-toml/src app.mojo`.
 
 ```mojo
-from toml import parse, to_json, KIND_TABLE
+from toml import parse
 
 
 def main() raises:
     var doc = parse("""
-title = "demo"
 [server]
 host = "localhost"
 port = 8080
-ratio = 0.75
-debug = true
-started = 1979-05-27T07:32:00Z
-tags = ["a", "b"]
 """)
     var server = doc["server"]
     print(server["host"].as_string(), server["port"].as_int())
-    print(server["ratio"].as_float(), server["debug"].as_bool())
-    print(server["started"].as_datetime_text(), server["tags"].len(), server["tags"][1].as_string())
-    print(doc.contains("title"), doc.get("missing").__bool__(), server.kind() == KIND_TABLE)
-    for k in server.keys():
-        print("key", k)
-    print(to_json(doc["title"]))
-    try:
-        _ = parse("a = 1\na = 2")
-    except e:
-        print("error:", e)
 ```
-
-| | |
-|---|---|
-| parse | 104 ms |
 <!-- /install -->
-
 
 A TOML 1.1 parser written in pure Mojo. It passes the complete official
 conformance suite, [toml-test](https://github.com/toml-lang/toml-test) v2.2.0:
 **214/214 valid and 467/467 invalid** documents, on Mojo 1.2.0.
 
-```mojo
-from toml import parse
-
-def main() raises:
-    var doc = parse(open("config.toml", "r").read())
-    var server = doc["server"]
-    print(server["host"].as_string(), server["port"].as_int())
-```
-
-## Install
-
 Requires Mojo 1.2 (`pip install "mojo==1.2.0"` or `uv sync` in this repo).
-There is no package registry for Mojo yet, so pick one:
-
-| Way | Command |
-|---|---|
-| Source path | `mojo run -I path/to/mojo-toml/src app.mojo` |
-| Precompiled | `mojo precompile src/toml -o toml.mojoc`, then put `toml.mojoc` next to your code or in a `-I` dir |
-| Vendor | copy `src/toml/` into your project |
 
 ## What you get
 
