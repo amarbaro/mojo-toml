@@ -72,4 +72,10 @@ name = "second"
     with assert_raises(contains="too deeply nested"):
         _ = parse("a = " + "{b=" * 100000 + "1" + "}" * 100000)
     assert_equal(parse("a = " + "[" * 100 + "]" * 100).len(), 1)
+    # optional seconds: HH:MM only, never HH:MM.fraction
+    with assert_raises():
+        _ = parse("t = 07:32.5")
+    with assert_raises():
+        _ = parse("t = 1979-05-27T07:32.5Z")
+    assert_equal(parse("t = 07:32")["t"].as_datetime_text(), "07:32:00")
     print("api: ok")

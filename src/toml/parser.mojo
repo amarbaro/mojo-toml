@@ -72,7 +72,7 @@ def add_seconds(mut b: List[UInt8], off: Int):
     """TOML 1.1 makes seconds optional: insert ":00" after a bare HH:MM at off."""
     if len(b) < off + 5 or b[off + 2] != COLON:
         return
-    if len(b) > off + 5 and b[off + 5] == COLON:
+    if len(b) > off + 5 and (b[off + 5] == COLON or b[off + 5] == DOT):
         return
     var out: List[UInt8] = []
     for i in range(off + 5):
