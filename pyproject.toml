@@ -1,6 +1,6 @@
 [project]
 name = "mojo-toml"
-version = "0.2.2"
+version = "0.2.3"
 description = "TOML 1.1 parser for Mojo, passes the full toml-test suite"
 license = "Apache-2.0"
 requires-python = ">=3.11,<3.15"
