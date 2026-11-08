@@ -9,7 +9,8 @@ mkdir -p .work
 # wide tables go through the hash index (more than INDEX_AT = 16 keys)
 wide=$(for i in $(seq 0 29); do echo "k$i = $i"; done)
 printf '%s\nk19 = 0\n' "$wide" | ./.work/decoder >/dev/null 2>&1 && { echo "FAIL wide: duplicate key past the index threshold accepted"; exit 1; }
-printf '%s\n' "$wide" | ./.work/decoder | grep -q '"k29":{"type":"integer","value":"29"}' || { echo "FAIL wide: k29 lost in indexed table"; exit 1; }
+out=$(printf '%s\n' "$wide" | ./.work/decoder) || { echo "FAIL wide: decoder failed on the wide table"; exit 1; }
+grep -q '"k29":{"type":"integer","value":"29"}' <<<"$out" || { echo "FAIL wide: k29 lost in indexed table"; exit 1; }
 echo "wide tables: ok"
 .venv/bin/mojo run -I src tests/api.mojo || { echo "FAIL api: tests/api.mojo"; exit 1; }
 .venv/bin/mojo run -I src examples/quickstart.mojo >/dev/null || { echo "FAIL example: examples/quickstart.mojo"; exit 1; }
