@@ -2,6 +2,7 @@
 
 Full notes in `docs/releases/`. Newest first. Format: the release-note template.
 
+- [v0.2.4](docs/releases/v0.2.4.md) (2026-11-08): packaging: compiler pin to build minor; gate fix
 - [v0.2.3](docs/releases/v0.2.3.md) (2026-11-07): docs: CHANGELOG names no home path
 - [v0.2.2](docs/releases/v0.2.2.md) (2026-11-04): faster integer parsing, conda recipe, property smoke step
 - [v0.2.1](docs/releases/v0.2.1.md) (2026-10-29): builds on the stable Mojo 1.2.0 release

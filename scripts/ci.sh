@@ -4,7 +4,11 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 TOML_TEST_VERSION=v2.2.0
 command -v uv >/dev/null || { echo "FAIL setup: uv not installed"; exit 1; }
-uv sync || { echo "FAIL setup: uv sync"; exit 1; }
+if [ -z "${MOJO:-}" ]; then
+  uv sync || { echo "FAIL setup: uv sync"; exit 1; }
+  MOJO=.venv/bin/mojo
+fi
+export MOJO
 mkdir -p .work
 bin=.work/toml-test
 if [ ! -x "$bin" ]; then
